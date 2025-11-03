@@ -8,7 +8,7 @@ npm install
 
 ## Ejecutar
 
-npm start
+npm run dev
 
 # o para desarrollo
 

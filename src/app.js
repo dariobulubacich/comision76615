@@ -5,24 +5,16 @@ const { v4: uuidv4 } = require("uuid");
 
 const app = express();
 
-//* MIDDLEWARES
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-//* RUTAS BASE
 app.get("/", (req, res) => {
-  res.send("🚀 Mi tienda");
+  res.send("🚀 Comenzando con Mi Tienda");
 });
 
-// ===================================================================
-// 📦 ARCHIVOS DE DATOS
-// ===================================================================
 const productsFile = path.join(__dirname, "../data/products.json");
 const cartsFile = path.join(__dirname, "../data/carts.json");
 
-// ===================================================================
-// 🧠 FUNCIONES AUXILIARES
-// ===================================================================
 function readFile(filePath) {
   if (!fs.existsSync(filePath)) {
     fs.writeFileSync(filePath, JSON.stringify([], null, 2));
@@ -35,11 +27,6 @@ function writeFile(filePath, data) {
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
 }
 
-// ===================================================================
-// 🛍️ RUTAS DE PRODUCTOS (/api/products)
-// ===================================================================
-
-//* GET /api/products -> Listar todos
 app.get("/api/products", (req, res) => {
   try {
     const products = readFile(productsFile);
@@ -49,7 +36,6 @@ app.get("/api/products", (req, res) => {
   }
 });
 
-//* GET /api/products/:pid -> Obtener producto por id
 app.get("/api/products/:pid", (req, res) => {
   try {
     const { pid } = req.params;
@@ -63,7 +49,6 @@ app.get("/api/products/:pid", (req, res) => {
   }
 });
 
-//* POST /api/products -> Crear producto
 app.post("/api/products", (req, res) => {
   try {
     const {
@@ -101,7 +86,6 @@ app.post("/api/products", (req, res) => {
   }
 });
 
-//* PUT /api/products/:pid -> Actualizar producto
 app.put("/api/products/:pid", (req, res) => {
   try {
     const { pid } = req.params;
@@ -125,7 +109,6 @@ app.put("/api/products/:pid", (req, res) => {
   }
 });
 
-//* DELETE /api/products/:pid -> Eliminar producto
 app.delete("/api/products/:pid", (req, res) => {
   try {
     const { pid } = req.params;
@@ -145,11 +128,6 @@ app.delete("/api/products/:pid", (req, res) => {
   }
 });
 
-// ===================================================================
-// 🛒 RUTAS DE CARRITOS (/api/carts)
-// ===================================================================
-
-//* POST /api/carts -> Crear carrito
 app.post("/api/carts", (req, res) => {
   try {
     const carts = readFile(cartsFile);
@@ -162,7 +140,6 @@ app.post("/api/carts", (req, res) => {
   }
 });
 
-//* GET /api/carts/:cid -> Obtener productos de un carrito
 app.get("/api/carts/:cid", (req, res) => {
   try {
     const { cid } = req.params;
@@ -175,7 +152,6 @@ app.get("/api/carts/:cid", (req, res) => {
   }
 });
 
-//* POST /api/carts/:cid/product/:pid -> Agregar producto al carrito
 app.post("/api/carts/:cid/product/:pid", (req, res) => {
   try {
     const { cid, pid } = req.params;
