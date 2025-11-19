@@ -6,21 +6,17 @@ const { v4: uuidv4 } = require("uuid");
 
 const app = express();
 
-// ============= MIDDLEWARES =============
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "../public")));
 
-// ============= HANDLEBARS =============
 app.engine("handlebars", handlebars.engine());
 app.set("view engine", "handlebars");
 app.set("views", path.join(__dirname, "../views"));
 
-// ============= ARCHIVOS JSON =============
 const productsFile = path.join(__dirname, "../data/products.json");
 const cartsFile = path.join(__dirname, "../data/carts.json");
 
-// Helpers de persistencia
 function readFile(filePath) {
   if (!fs.existsSync(filePath)) fs.writeFileSync(filePath, "[]");
   return JSON.parse(fs.readFileSync(filePath, "utf-8"));
@@ -29,25 +25,16 @@ function writeFile(filePath, data) {
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
 }
 
-// =========================
-//      RUTAS VIEWS
-// =========================
-
-// HOME — muestra todos los productos
 app.get("/", (req, res) => {
   const products = readFile(productsFile);
   res.render("home", { products });
 });
 
-// Vista con WebSockets
 app.get("/realtimeproducts", (req, res) => {
   const products = readFile(productsFile);
   res.render("realTimeProducts", { products });
 });
 
-// =========================
-//     API PRODUCTS
-// =========================
 app.get("/api/products", (req, res) => {
   res.json(readFile(productsFile));
 });
@@ -87,7 +74,6 @@ app.post("/api/products", (req, res) => {
   products.push(newProduct);
   writeFile(productsFile, products);
 
-  // 🔥 Emitir actualización a websockets
   io.emit("productAdded", newProduct);
 
   res.status(201).json({ success: true, product: newProduct });
@@ -114,15 +100,11 @@ app.delete("/api/products/:pid", (req, res) => {
   const deleted = products.splice(i, 1)[0];
   writeFile(productsFile, products);
 
-  // 🔥 Emitir actualización a websockets
   io.emit("productDeleted", deleted.id);
 
   res.json({ success: true });
 });
 
-// =========================
-//       API CARTS
-// =========================
 app.post("/api/carts", (req, res) => {
   const carts = readFile(cartsFile);
   const newCart = { id: uuidv4(), products: [] };
