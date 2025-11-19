@@ -1,0 +1,12 @@
+<h1>Productos en tiempo real</h1>
+
+<ul id="productList">
+  {{#each products}}
+    <li id="prod-{{this.id}}">
+      <strong>{{this.title}}</strong>
+      - ${{this.price}}
+    </li>
+  {{/each}}
+</ul>
+
+<script src="/js/realtime.js"></script>
