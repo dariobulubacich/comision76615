@@ -1,0 +1,24 @@
+<h1>Listado de Productos</h1>
+
+<ul>
+  {{#each products}}
+    <li>
+      <h3>{{this.title}}</h3>
+      <p>Precio: ${{this.price}}</p>
+      <p>Categoría: {{this.category}}</p>
+
+      <a href="/products/{{this._id}}">Ver detalle</a>
+    </li>
+    <hr />
+  {{/each}}
+</ul>
+
+<div>
+  {{#if hasPrevPage}}
+    <a href="/products?page={{prevPage}}">⬅ Página anterior</a>
+  {{/if}}
+
+  {{#if hasNextPage}}
+    <a href="/products?page={{nextPage}}">Página siguiente ➡</a>
+  {{/if}}
+</div>

@@ -1,0 +1,27 @@
+<h1>Detalle del Producto</h1>
+
+<h2>{{product.title}}</h2>
+
+<p><strong>Descripción:</strong> {{product.description}}</p>
+<p><strong>Precio:</strong> ${{product.price}}</p>
+<p><strong>Stock:</strong> {{product.stock}}</p>
+<p><strong>Categoría:</strong> {{product.category}}</p>
+<p><strong>Estado:</strong>
+  {{#if product.status}}Disponible{{else}}No disponible{{/if}}
+</p>
+
+{{#if product.thumbnails.length}}
+  <h4>Imágenes</h4>
+  <ul>
+    {{#each product.thumbnails}}
+      <li>{{this}}</li>
+    {{/each}}
+  </ul>
+{{/if}}
+
+<hr />
+
+<button>Agregar al carrito</button>
+
+<br /><br />
+<a href="/products">⬅ Volver al listado</a>
